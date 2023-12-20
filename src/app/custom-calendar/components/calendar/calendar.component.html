@@ -1,10 +1,11 @@
-<div class="antialiased sans-serif bg-gray-100 h-screen">
+<div class="antialiased sans-serif min-h-screen">
   <calendar-navigation
     [month]="month"
     (monthEvent)="handleChangeMonth($event)"
     (yearEvent)="handleChangeYear($event)"
     [year]="year"
   ></calendar-navigation>
+
   <div class="-mx-1 -mb-1">
     <!-- Days -->
     <div class="flex flex-wrap" style="margin-bottom: -40px">
@@ -19,49 +20,31 @@
       }
     </div>
 
+    <!-- blank days -->
     <div class="flex flex-wrap border-t border-l">
-      <!-- blank days -->
       @for (blankDay of blankDays(); track $index) {
       <div
         style="width: 14.28%; height: 120px"
-        class="pattern-diagonal-lines pattern-blue-600 pattern-bg-white pattern-size-2 pattern-opacity-5 text-center border-r border-b border-current px-4 pt-2"
+        class="pattern-diagonal-lines pattern-blue-600 pattern-bg-white pattern-size-2 pattern-opacity-10 text-center border-r border-b border-current px-4 pt-2"
       ></div>
       }
 
       <!-- Main calendar -->
       @for (date of numberOfDays(); track $index) {
-      <div
-        style="width: 14.28%; height: 120px"
-        class="px-4 pt-2 border-r border-b relative"
-      >
-        <div
-          class="inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
-          [ngClass]="{
-            'bg-blue-500 text-white': isToday(date) == true,
-            'text-gray-700 hover:bg-blue-200': isToday(date) == false
-          }"
-        >
-          {{ date }}
-        </div>
-
-        <!-- Day events -->
-        <div style="height: 80px" class="overflow-y-auto mt-1">
-          <div
-            x-for="event in events.filter(e => new Date(e.event_date).toDateString() ===  new Date(year, month, date).toDateString() )"
-          >
-            <div
-              class="px-2 py-1 rounded-lg mt-1 overflow-hidden border"
-              :class="{ 'border-blue-200 text-blue-800 bg-blue-100': event.event_theme === 'blue', 'border-red-200 text-red-800 bg-red-100': event.event_theme === 'red', 'border-yellow-200 text-yellow-800 bg-yellow-100': event.event_theme === 'yellow', 'border-green-200 text-green-800 bg-green-100': event.event_theme === 'green', 'border-purple-200 text-purple-800 bg-purple-100': event.event_theme === 'purple' }"
-            >
-              <p
-                x-text="event.event_title"
-                class="text-sm truncate leading-tight"
-              ></p>
-            </div>
-          </div>
-        </div>
+      <div style="width: 14.28%; height: 120px" class="relative">
+        <calendar-day
+          [(openEventModal)]="openEventModal"
+          [isToday]="isToday(date)"
+          [year]="year"
+          [date]="date"
+        ></calendar-day>
       </div>
       }
     </div>
+
+    <!-- event  modal -->
+    @if (openEventModal) {
+    <calendar-modal [(openEventModal)]="openEventModal"></calendar-modal>
+    }
   </div>
 </div>

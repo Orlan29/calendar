@@ -1,0 +1,15 @@
+<div
+  class="px-4 pt-2 border-r border-b h-full hover:bg-blue-200 cursor-pointer"
+  (click)="handleAddEvent()"
+>
+  <div
+    class="select-none inline-flex w-8 h-8 items-center justify-center text-center leading-none rounded-full"
+    [ngClass]="{
+      'bg-white text-blue-500 border border-blue-500': isToday,
+      'text-gray-700': !isToday
+    }"
+  >
+    {{ date }}
+  </div>
+  <calendar-event></calendar-event>
+</div>

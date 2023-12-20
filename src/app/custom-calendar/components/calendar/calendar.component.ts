@@ -1,17 +1,19 @@
-import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  WritableSignal,
   signal,
 } from '@angular/core';
+import { DayComponent } from '@calendar/core/components/day/day.component';
 import { NavigationComponent } from '@calendar/core/components/navigation/navigation.component';
 import { days } from '@calendar/core/constants';
+import { ModalComponent } from '@calendar/ui/components/modal/modal.component';
 
 @Component({
   selector: 'calendar',
   standalone: true,
-  imports: [NavigationComponent, NgStyle, NgClass],
+  imports: [NavigationComponent, DayComponent, ModalComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,9 +26,12 @@ export class CalendarComponent implements OnInit {
   year!: number;
   numberOfDays = signal<number[]>([]);
   isToDay!: boolean;
+  openEventModal!: boolean;
 
   ngOnInit(): void {
     this.days = days;
+    this.openEventModal = false;
+
     this.initDate();
     this.getNoOfDays();
   }
@@ -57,6 +62,7 @@ export class CalendarComponent implements OnInit {
 
   handleChangeYear(value: number): void {
     this.year = value;
+    this.getNoOfDays();
   }
 
   private initDate(): void {
@@ -68,7 +74,6 @@ export class CalendarComponent implements OnInit {
   isToday(date: number): boolean {
     const today = new Date();
     const d = new Date(this.year, this.month(), date);
-
     return today.toDateString() === d.toDateString();
   }
 

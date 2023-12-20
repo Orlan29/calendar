@@ -1,1 +1,14 @@
-<p>event works!</p>
+<div style="height: 80px" class="overflow-y-auto mt-1">
+  <div
+    x-for="event in events.filter(e => new Date(e.event_date).toDateString() ===  new Date(year, month, date).toDateString() )"
+  >
+    <div
+      class="px-2 py-1 rounded-lg mt-1 overflow-hidden border"
+      :class="{ 'border-blue-200 text-blue-800 bg-blue-100': event.event_theme === 'blue', 'border-red-200 text-red-800 bg-red-100': event.event_theme === 'red', 'border-yellow-200 text-yellow-800 bg-yellow-100': event.event_theme === 'yellow', 'border-green-200 text-green-800 bg-green-100': event.event_theme === 'green', 'border-purple-200 text-purple-800 bg-purple-100': event.event_theme === 'purple' }"
+    >
+      <p x-text="event.event_title" class="text-sm truncate leading-tight">
+        Something
+      </p>
+    </div>
+  </div>
+</div>

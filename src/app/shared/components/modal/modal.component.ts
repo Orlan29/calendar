@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-modal',
+  selector: 'calendar-modal',
   standalone: true,
   imports: [],
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.scss'
+  styleUrl: './modal.component.scss',
 })
 export class ModalComponent {
+  @Input() openEventModal!: boolean;
+  @Output() openEventModalChange = new EventEmitter<boolean>();
 
+  handleAddEvent(): void {
+    this.openEventModalChange.emit(false);
+  }
 }
