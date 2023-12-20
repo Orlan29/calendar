@@ -19,10 +19,12 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"],
+    "paths": {
+      "@calendar/*": ["./src/app/custom-calendar/components/*"],
+      "@calendar/ui/*": ["./src/app/shared/*"],
+      "@calendar/core/*": ["./src/app/core/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
