@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   WritableSignal,
 } from '@angular/core';
@@ -14,16 +15,21 @@ import { monthNames } from '@calendar/core/constants';
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
 })
-export class NavigationComponent {
-  @Input({ required: true }) month!: WritableSignal<number>;
+export class NavigationComponent implements OnInit {
+  @Input({ required: true }) month!: number;
   @Input({ required: true }) year!: number;
+  @Input({ required: true }) isToday!: boolean;
   @Output() monthEvent = new EventEmitter<number>();
   @Output() yearEvent = new EventEmitter<number>();
-  monthNames = monthNames;
+  monthNames!: string[];
+
+  ngOnInit(): void {
+    this.monthNames = monthNames;
+  }
 
   handleGoToNextMonth(): void {
-    if (this.month() < 11) {
-      this.monthEvent.emit(this.month() + 1);
+    if (this.month < 11) {
+      this.monthEvent.emit(this.month + 1);
     } else {
       this.monthEvent.emit(0);
       this.yearEvent.emit(this.year + 1);
@@ -31,11 +37,17 @@ export class NavigationComponent {
   }
 
   handleGoToPreviousMonth(): void {
-    if (this.month() > 0) {
-      this.monthEvent.emit(this.month() - 1);
+    if (this.month > 0) {
+      this.monthEvent.emit(this.month - 1);
     } else {
       this.monthEvent.emit(11);
       this.yearEvent.emit(this.year - 1);
     }
+  }
+
+  handleGoToday(): void {
+    const today = new Date();
+    this.monthEvent.emit(today.getMonth());
+    this.yearEvent.emit(today.getFullYear());
   }
 }

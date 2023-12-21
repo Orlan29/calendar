@@ -1,9 +1,10 @@
 <div class="antialiased sans-serif min-h-screen">
   <calendar-navigation
-    [month]="month"
+    [month]="month()"
     (monthEvent)="handleChangeMonth($event)"
     (yearEvent)="handleChangeYear($event)"
-    [year]="year"
+    [year]="year()"
+    [isToday]="isToDay"
   ></calendar-navigation>
 
   <div class="-mx-1 -mb-1">
@@ -35,7 +36,7 @@
         <calendar-day
           [(openEventModal)]="openEventModal"
           [isToday]="isToday(date)"
-          [year]="year"
+          [year]="year()"
           [date]="date"
         ></calendar-day>
       </div>
